@@ -1,4 +1,4 @@
-FROM alpine:3.14.3
+FROM alpine:3.15
 
 LABEL maintainer="Sergio Moura <https://sergio.moura.ca/>"
 ENV PYTHONIOENCODING="UTF-8"
@@ -25,5 +25,10 @@ VOLUME /config
 VOLUME /data
 
 EXPOSE 5050
+
+# docker-entrypoint
+COPY docker-entrypoint.sh /
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
 
 CMD ["python", "CouchPotato.py", "--data_dir", "/data", "--config_file", "/config/config.ini", "--console_log"]
