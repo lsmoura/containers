@@ -1,7 +1,8 @@
-FROM alpine:3.15.0
+FROM alpine:3.16.2
 
 LABEL maintainer="Sergio Moura <sergio@moura.ca>"
 LABEL org.opencontainers.image.source="https://github.com/lsmoura/containers/sabnzbd"
+LABEL org.opencontainers.image.description="SabNZBd.org - Free and easy binary newsreader - slim build on alpine linux"
 
 RUN apk add --update --no-cache curl python3 py3-pip libffi openssl p7zip libgomp
 
@@ -20,7 +21,7 @@ RUN apk add --update  --no-cache --virtual .build-deps build-base automake autoc
   cd /tmp && rm -Rf par2cmdline-${PAR2VERSION} par2cmdline-${PAR2VERSION}.tar.gz
 
 ## UNRAR
-ARG UNRAR_VERSION=6.1.4
+ARG UNRAR_VERSION=6.1.7
 RUN apk add --update --no-cache libstdc++ && \
   apk add --update --no-cache --virtual .build-deps build-base curl && \
   curl -LO https://www.rarlab.com/rar/unrarsrc-${UNRAR_VERSION}.tar.gz && \
@@ -31,7 +32,7 @@ RUN apk add --update --no-cache libstdc++ && \
   cd /tmp && rm -Rf unrar unrarsrc-${UNRAR_VERSION}.tar.gz
 
 ## SABNZBD
-ARG VERSION=3.5.0
+ARG VERSION=3.6.1
 WORKDIR /opt
 RUN mkdir -p /opt && cd /opt && \
   curl -LO https://github.com/sabnzbd/sabnzbd/releases/download/$VERSION/SABnzbd-${VERSION}-src.tar.gz && \
@@ -40,7 +41,7 @@ RUN mkdir -p /opt && cd /opt && \
 
 WORKDIR /opt/SABnzbd-${VERSION}
 RUN apk add --no-cache --virtual .build-deps build-base python3-dev py3-wheel libffi-dev openssl-dev rust cargo && \
-  python3 -m pip install --requirement requirements.txt && \
+  python3 -m pip install --extra-index-url https://alpine-wheels.github.io/index --requirement requirements.txt && \
   apk del .build-deps && \
   rm -Rf ${HOME}/.cache ${HOME}/.cargo
 
