@@ -1,4 +1,4 @@
-FROM alpine:3.16.2
+FROM alpine:3.17.0
 
 LABEL maintainer="Sergio Moura <sergio@moura.ca>"
 LABEL org.opencontainers.image.source="https://github.com/lsmoura/containers/sabnzbd"
@@ -21,7 +21,7 @@ RUN apk add --update  --no-cache --virtual .build-deps build-base automake autoc
   cd /tmp && rm -Rf par2cmdline-${PAR2VERSION} par2cmdline-${PAR2VERSION}.tar.gz
 
 ## UNRAR
-ARG UNRAR_VERSION=6.1.7
+ARG UNRAR_VERSION=6.2.3
 RUN apk add --update --no-cache libstdc++ && \
   apk add --update --no-cache --virtual .build-deps build-base curl && \
   curl -LO https://www.rarlab.com/rar/unrarsrc-${UNRAR_VERSION}.tar.gz && \
@@ -32,7 +32,7 @@ RUN apk add --update --no-cache libstdc++ && \
   cd /tmp && rm -Rf unrar unrarsrc-${UNRAR_VERSION}.tar.gz
 
 ## SABNZBD
-ARG VERSION=3.6.1
+ARG VERSION=3.7.1
 WORKDIR /opt
 RUN mkdir -p /opt && cd /opt && \
   curl -LO https://github.com/sabnzbd/sabnzbd/releases/download/$VERSION/SABnzbd-${VERSION}-src.tar.gz && \
