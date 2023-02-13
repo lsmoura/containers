@@ -32,7 +32,7 @@ RUN apk add --update --no-cache libstdc++ && \
   cd /tmp && rm -Rf unrar unrarsrc-${UNRAR_VERSION}.tar.gz
 
 ## SABNZBD
-ARG VERSION=3.7.1
+ARG VERSION=3.7.2
 WORKDIR /opt
 RUN mkdir -p /opt && cd /opt && \
   curl -LO https://github.com/sabnzbd/sabnzbd/releases/download/$VERSION/SABnzbd-${VERSION}-src.tar.gz && \
