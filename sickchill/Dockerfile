@@ -1,4 +1,4 @@
-FROM alpine:3.16.2
+FROM alpine:3.17
 
 LABEL maintainer="Sergio Moura <sergio@moura.ca>"
 LABEL org.opencontainers.image.source="https://github.com/lsmoura/containers/sickchill"
@@ -22,14 +22,13 @@ RUN \
 		make \
 		openssl-dev \
 		python3-dev && \
-	ln -s /usr/bin/python3 /usr/bin/python && \
 	pip3 install -U pip && \
 	pip3 install --upgrade --prefer-binary poetry pip wheel setuptools && \
 	apk del .build-deps && \
 	rm -Rf ${HOME}/.cache ${HOME}/.local
 
 ## UNRAR
-ARG UNRAR_VERSION=6.1.7
+ARG UNRAR_VERSION=6.2.5
 RUN apk add --update --no-cache libstdc++ && \
   apk add --update --no-cache --virtual .build-deps build-base curl && \
   cd /tmp && \
@@ -40,12 +39,12 @@ RUN apk add --update --no-cache libstdc++ && \
   apk del .build-deps && \
   cd /tmp && rm -Rf unrar unrarsrc-${UNRAR_VERSION}.tar.gz
 
-ARG VERSION=2022.8.30
+ARG VERSION=2022.10.8
 RUN apk add --no-cache --virtual .build-deps curl build-base python3-dev && \
 	cd /opt && \
-	curl -Lo SickChill-${VERSION}.zip https://github.com/SickChill/SickChill/archive/refs/tags/${VERSION}.zip && \
-	unzip SickChill-${VERSION}.zip && rm SickChill-${VERSION}.zip && \
-	mv SickChill-${VERSION}/ sickchill && \
+	curl -Lo sickchill-${VERSION}.zip https://github.com/SickChill/SickChill/archive/refs/tags/${VERSION}.zip && \
+	unzip sickchill-${VERSION}.zip && rm sickchill-${VERSION}.zip && \
+	mv sickchill-${VERSION}/ sickchill && \
 	cd /opt/sickchill && \
 	python3 -m pip install . && \
 	cd /tmp && \
@@ -56,4 +55,4 @@ VOLUME /data /downloads /tv
 
 EXPOSE 8081
 
-CMD python3 /usr/bin/SickChill --nolaunch --datadir /config --port 8081
+CMD ["python3", "/usr/bin/SickChill", "--nolaunch", "--datadir", "/config", "--port", "8081"]
