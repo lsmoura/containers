@@ -1,4 +1,4 @@
-FROM alpine:3.17.0
+FROM alpine:3.17.3
 
 LABEL maintainer="Sergio Moura <sergio@moura.ca>"
 LABEL org.opencontainers.image.source="https://github.com/lsmoura/containers/sabnzbd"
@@ -32,7 +32,7 @@ RUN apk add --update --no-cache libstdc++ && \
   cd /tmp && rm -Rf unrar unrarsrc-${UNRAR_VERSION}.tar.gz
 
 ## SABNZBD
-ARG VERSION=3.7.2
+ARG VERSION=4.0.0
 WORKDIR /opt
 RUN mkdir -p /opt && cd /opt && \
   curl -LO https://github.com/sabnzbd/sabnzbd/releases/download/$VERSION/SABnzbd-${VERSION}-src.tar.gz && \

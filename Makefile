@@ -1,4 +1,4 @@
-SABNZBD_VERSION=3.7.2
+SABNZBD_VERSION=4.0.0
 SABNZBD_IMAGE_PREFIX=ghcr.io/lsmoura/sabnzbd
 
 SICKCHILL_VERSION=2022.10.8
@@ -19,9 +19,13 @@ update-sickchill: build-sickchill-all
 	docker manifest create $(SICKCHILL_IMAGE_PREFIX):$(SICKCHILL_VERSION) $(SICKCHILL_IMAGE_PREFIX):$(SICKCHILL_VERSION)-amd64 $(SICKCHILL_IMAGE_PREFIX):$(SICKCHILL_VERSION)-arm64
 	docker manifest push $(SICKCHILL_IMAGE_PREFIX):$(SICKCHILL_VERSION)
 
-build-sabnzbd-all:
+build-sabnzbd-amd64:
 	docker build --platform linux/amd64 --tag $(SABNZBD_IMAGE_PREFIX):$(SABNZBD_VERSION)-amd64 --build-arg VERSION=$(SABNZBD_VERSION) --progress plain - < sabnzbd/Dockerfile
+
+build-sabnzbd-arm64:
 	docker build --platform linux/arm64 --tag ${SABNZBD_IMAGE_PREFIX}:$(SABNZBD_VERSION)-arm64 --build-arg VERSION=$(SABNZBD_VERSION) --progress plain - < sabnzbd/Dockerfile
+
+build-sabnzbd-all: build-sabnzbd-amd64 build-sabnzbd-arm64
 
 build-sabnzbd-parallel:
 	parallel --tag --verbose --line-buffer \
