@@ -1,4 +1,5 @@
-SABNZBD_VERSION=4.0.0
+SABNZBD_VERSION=4.0.1
+UNRAR_VERSION=6.2.7
 SABNZBD_IMAGE_PREFIX=ghcr.io/lsmoura/sabnzbd
 
 SICKCHILL_VERSION=2022.10.8
@@ -20,16 +21,16 @@ update-sickchill: build-sickchill-all
 	docker manifest push $(SICKCHILL_IMAGE_PREFIX):$(SICKCHILL_VERSION)
 
 build-sabnzbd-amd64:
-	docker build --platform linux/amd64 --tag $(SABNZBD_IMAGE_PREFIX):$(SABNZBD_VERSION)-amd64 --build-arg VERSION=$(SABNZBD_VERSION) --progress plain - < sabnzbd/Dockerfile
+	docker build --platform linux/amd64 --tag $(SABNZBD_IMAGE_PREFIX):$(SABNZBD_VERSION)-amd64 --build-arg VERSION=$(SABNZBD_VERSION) --build-arg UNRAR_VERSION=$(UNRAR_VERSION) --progress plain - < sabnzbd/Dockerfile
 
 build-sabnzbd-arm64:
-	docker build --platform linux/arm64 --tag ${SABNZBD_IMAGE_PREFIX}:$(SABNZBD_VERSION)-arm64 --build-arg VERSION=$(SABNZBD_VERSION) --progress plain - < sabnzbd/Dockerfile
+	docker build --platform linux/arm64 --tag ${SABNZBD_IMAGE_PREFIX}:$(SABNZBD_VERSION)-arm64 --build-arg VERSION=$(SABNZBD_VERSION) --build-arg UNRAR_VERSION=$(UNRAR_VERSION) --progress plain - < sabnzbd/Dockerfile
 
 build-sabnzbd-all: build-sabnzbd-amd64 build-sabnzbd-arm64
 
 build-sabnzbd-parallel:
 	parallel --tag --verbose --line-buffer \
-	docker build --platform linux/{1} --tag $(SABNZBD_IMAGE_PREFIX):$(SABNZBD_VERSION)-{1} --build-arg VERSION=$(SABNZBD_VERSION) --progress plain sabnzbd \
+	docker build --platform linux/{1} --tag $(SABNZBD_IMAGE_PREFIX):$(SABNZBD_VERSION)-{1} --build-arg VERSION=$(SABNZBD_VERSION) --build-arg UNRAR_VERSION=$(UNRAR_VERSION) --progress plain sabnzbd \
 	::: amd64 arm64
 
 update-sabnzbd: build-sabnzbd-all
