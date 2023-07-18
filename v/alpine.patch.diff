@@ -1,0 +1,19 @@
+diff --color -ruN v-0.4/vlib/builtin/builtin_d_gcboehm.c.v original/v-0.4/vlib/builtin/builtin_d_gcboehm.c.v
+--- v-0.4/vlib/builtin/builtin_d_gcboehm.c.v	2023-07-18 14:01:52
++++ original/v-0.4/vlib/builtin/builtin_d_gcboehm.c.v   2023-07-01 06:50:33
+@@ -31,12 +31,12 @@
+ } $else {
+ 	$if macos || linux {
+ 		#flag -DGC_BUILTIN_ATOMIC=1
+-		#flag -I @VEXEROOT/thirdparty/libgc/include
++		#flag -I /usr/include/gc
+ 		$if (prod && !tinyc && !debug) || !(amd64 || arm64 || i386 || arm32) {
+ 			// TODO: replace the architecture check with a `!$exists("@VEXEROOT/thirdparty/tcc/lib/libgc.a")` comptime call
+-			#flag @VEXEROOT/thirdparty/libgc/gc.o
++			#flag -lgc
+ 		} $else {
+-			#flag @VEXEROOT/thirdparty/tcc/lib/libgc.a
++			#flag /usr/lib/libgc.so
+ 		}
+ 		$if macos {
+ 			#flag -DMPROTECT_VDB=1
